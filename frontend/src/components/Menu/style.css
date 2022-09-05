@@ -1,0 +1,5 @@
+.nav-link {
+    text-decoration: none;
+    color: var(--df-light);
+    margin-right: 10px;
+}
