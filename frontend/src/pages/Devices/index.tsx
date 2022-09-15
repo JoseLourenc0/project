@@ -1,7 +1,7 @@
 import React from 'react'
 import { DataTable } from "../../components/Table"
 import { Device } from '../../models/reg'
-import api from "../../utils/api"
+import api from "../../services/api"
 import './style.css'
 
 export const Devices = () => {
