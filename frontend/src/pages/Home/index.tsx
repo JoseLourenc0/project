@@ -1,13 +1,18 @@
 import React from 'react'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
+import TextField from '@mui/material/TextField'
 import { MultipleYAxisChart } from '../../components/Charts'
 import { Reg } from '../../models/reg'
 import api from "../../services/api"
 import './style.css'
 import { MultipleAxisDataBasic } from '../../models/charts'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { DatePicker } from '@mui/x-date-pickers'
 
 export const Home = () => {
 
+    const [dateValue, setDateValue] = React.useState<Moment | null>(moment())
     const [AllRegs, setAllRegs] = React.useState<Reg[]>([])
     const [filteredRegs, setFilteredRegs] = React.useState<Reg[]>([])
 
@@ -15,16 +20,17 @@ export const Home = () => {
         getData()
     }, [])
 
-    const getData = (date: null | string= null) => {
+    const getData = (date: null | string = null) => {
         api.get(`/regs/1${date ? '?date='+date : ''}`).then(data => {
+            let tempData: Reg[] = []
             if(data && data.data && data.data.length > 0) {
-                const tempData: Reg[] = data.data.map((element: Reg) => {
+                tempData = data.data.map((element: Reg) => {
                     if(typeof element.data === 'string') element.data = JSON.parse(element.data)
                     return element
                 })
-                setAllRegs(tempData)
-                setFilteredRegs(tempData)
             }
+            setAllRegs(tempData)
+            setFilteredRegs(tempData)
         })
     }
 
@@ -77,11 +83,31 @@ export const Home = () => {
         return CHART_CONFIG
     }
 
+    const handleDateChange = (newValue: null | Moment) => {
+        setDateValue(newValue)
+        getData(moment(newValue).format('YYYY-MM-DD'))
+    };
+
     return (
         <div className="home-contaienr">
+            <div className="filter-options">
+                <div>
+                    <h4>{filteredRegs.length} Regs</h4>
+                </div>
+                <div>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DatePicker
+                            label="Date"
+                            value={dateValue}
+                            onChange={handleDateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                </div>
+            </div>
             <div className="home-chart-container">
             {
-                !filteredRegs || (filteredRegs as Reg[]).length == 0 ? '' : <MultipleYAxisChart CHART_CONFIG={getChartData()} />
+                !filteredRegs || (filteredRegs as Reg[]).length == 0 ? 'Not found any data' : <MultipleYAxisChart CHART_CONFIG={getChartData()} />
             }
             </div>
         </div>
