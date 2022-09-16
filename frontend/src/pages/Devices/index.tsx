@@ -22,6 +22,7 @@ export const Devices = () => {
                     cols: [
                         { field: 'id', headerName: 'ID', flex: 1, width: 150 },
                         { field: 'name', headerName: 'Name', flex: 1, width: 200 },
+                        { field: 'protocol', headerName: 'Protocol', flex: 1, width: 200 },
                         { field: 'created_at', headerName: 'Created At', flex: 1, width: 200 }
                     ]
                 })

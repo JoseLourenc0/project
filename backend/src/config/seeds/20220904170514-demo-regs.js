@@ -16,13 +16,13 @@ const mockTemp = index => {
 
 const mockHumidity = (index, sub = 0) => {
   let h = 80 - sub
-  const rand = Number(Math.random().toFixed(2)) + 3
+  const rand = Number(Math.random().toFixed(2)) + 7
   if(index === 0) return h
   const lastH = JSON.parse(data[index - 1].data).air_humidity
   
-  if(lastH <= 100 || rand > 3.4) return h - rand
+  if(lastH <= 100 || rand > 7.4) return h - rand
 
-  return h + rand //if(lastTemp >= 40 || rand<=3.4)
+  return h + rand //if(lastTemp >= 40 || rand<=7.4)
 }
 
 for(let i = 0; i <= REGS_NUMBER ?? 100; i++)

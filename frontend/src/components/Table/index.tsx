@@ -7,7 +7,7 @@ export const DataTable = (props: {tableData: {rows: Device[], cols: GridColDef[]
 
     let { tableData } = props
     tableData.rows = tableData.rows.map(element => {
-        element.created_at = moment(element.created_at).format('YYYY-MM-DD')
+        element.created_at = moment(element.created_at).format('YYYY-MM-DD HH:mm:ss')
         return element
     })
     const [DATA_GRID, setDATA_GRID] = React.useState({
