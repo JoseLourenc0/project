@@ -6,12 +6,15 @@ import api from "../../services/api"
 import './style.css'
 import { MultipleAxisDataBasic } from '../../models/charts'
 import { CustomDatePicker } from '../../components/CustomDatePicker'
+import Box from '@mui/material/Box'
+import Slider from '@mui/material/Slider'
 
 export const Home = () => {
 
     const [dateValue, setDateValue] = React.useState<Moment | null>(moment())
     const [AllRegs, setAllRegs] = React.useState<Reg[]>([])
     const [filteredRegs, setFilteredRegs] = React.useState<Reg[]>([])
+    const [regsSize, setRegsSize] = React.useState<number>(0)
 
     React.useEffect(() => {
         getData()
@@ -28,6 +31,7 @@ export const Home = () => {
             }
             setAllRegs(tempData)
             setFilteredRegs(tempData)
+            setRegsSize(tempData.length)
         })
     }
 
@@ -85,10 +89,19 @@ export const Home = () => {
         getData(moment(newValue).format('YYYY-MM-DD'))
     };
 
+    const handleSizeChange = (event: Event, newValue: number | number[]) => {
+        if(newValue === regsSize) return
+        setRegsSize(newValue as number)
+        setFilteredRegs(AllRegs.slice(0, (newValue as number)))
+    }
+
     return (
         <div className="home-contaienr">
             <div className="filter-options">
                 <div>
+                <Box width={300}>
+                    <Slider value = {regsSize} valueLabelDisplay = "auto" onChange = {handleSizeChange} max = {AllRegs.length} step = {10} />
+                </Box>
                     <h4>{filteredRegs.length} Regs</h4>
                 </div>
                 <div>
