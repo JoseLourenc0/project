@@ -1,139 +1,139 @@
 import React from 'react'
 import ReactApexChart from "react-apexcharts";
-import { Reg } from '../../models/reg';
-import moment from 'moment'
 
-export const MultipleYAxisChart = (props: {chartData: Reg[]}) => {
-    const { chartData } = props
-
-    const [Series, setSeries] = React.useState([
-      {
-        name: "Air Humidity",
-        type: "column",
-        data: chartData.map(element => typeof element.data === 'string' ? JSON.parse(element.data).air_humidity.toFixed(2) : element.data.air_humidity.toFixed(2) ),
-      },
-      {
-        name: "Soil Humidity",
-        type: "column",
-        data: chartData.map(element => typeof element.data === 'string' ? JSON.parse(element.data).soil_humidity.toFixed(2) : element.data.soil_humidity.toFixed(2) ),
-      },
-      {
-        name: "Air Temperature",
+export const MultipleYAxisChart = (props: {CHART_CONFIG: any}) => {
+    const basicOptions = {
+      chart: {
+        height: 350,
         type: "line",
-        data: chartData.map(element => typeof element.data === 'string' ? JSON.parse(element.data).air_temperature.toFixed(2) : element.data.air_temperature.toFixed(2) ),
+        stacked: false,
       },
-    ])
-    const [Options, setOptions] = React.useState({
-        chart: {
-          height: 350,
-          type: "line",
-          stacked: false,
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          width: [1, 1, 4],
-        },
-        title: {
-          text: "Device " + props.chartData[0].Device.name + ' - ( ' + moment(chartData[0].created_at).format('YYYY-MM-DD HH:mm:ss') + ' ~ ' + moment(chartData[chartData.length-1].created_at).format('YYYY-MM-DD HH:mm:ss') + ' )',
-          align: "left",
-          offsetX: 110,
-        },
-        xaxis: {
-          categories: chartData.map(e => moment(e.created_at).format('DD/MM/YYYY HH:mm:ss')),
-        },
-        yaxis: [
-          {
-            axisTicks: {
-              show: true,
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        width: [1, 1, 4],
+      },
+      title: {
+        text: "",
+        align: "left",
+        offsetX: 110,
+      },
+      xaxis: {
+        categories: [],
+      },
+      yaxis: [
+        {
+          axisTicks: {
+            show: true,
+          },
+          axisBorder: {
+            show: true,
+            color: "#008FFB",
+          },
+          labels: {
+            style: {
+              colors: "#008FFB",
             },
-            axisBorder: {
-              show: true,
+          },
+          title: {
+            text: "",
+            style: {
               color: "#008FFB",
             },
-            labels: {
-              style: {
-                colors: "#008FFB",
-              },
-            },
-            title: {
-              text: "Air Humidity (%)",
-              style: {
-                color: "#008FFB",
-              },
-            },
-            tooltip: {
-              enabled: true,
+          },
+          tooltip: {
+            enabled: true,
+          },
+        },
+        {
+          seriesName: "Income",
+          opposite: true,
+          axisTicks: {
+            show: true,
+          },
+          axisBorder: {
+            show: true,
+            color: "#00E396",
+          },
+          labels: {
+            style: {
+              colors: "#00E396",
             },
           },
-          {
-            seriesName: "Income",
-            opposite: true,
-            axisTicks: {
-              show: true,
-            },
-            axisBorder: {
-              show: true,
+          title: {
+            text: "",
+            style: {
               color: "#00E396",
             },
-            labels: {
-              style: {
-                colors: "#00E396",
-              },
-            },
-            title: {
-              text: "Soil Humidity (%)",
-              style: {
-                color: "#00E396",
-              },
+          },
+        },
+        {
+          seriesName: "DATA",
+          opposite: true,
+          axisTicks: {
+            show: true,
+          },
+          axisBorder: {
+            show: true,
+            color: "#FEB019",
+          },
+          labels: {
+            style: {
+              colors: "#FEB019",
             },
           },
-          {
-            seriesName: "DATA",
-            opposite: true,
-            axisTicks: {
-              show: true,
-            },
-            axisBorder: {
-              show: true,
+          title: {
+            text: "",
+            style: {
               color: "#FEB019",
             },
-            labels: {
-              style: {
-                colors: "#FEB019",
-              },
-            },
-            title: {
-              text: "Air Temperature (°C)",
-              style: {
-                color: "#FEB019",
-              },
-            },
-          },
-        ],
-        tooltip: {
-          fixed: {
-            enabled: true,
-            position: "topLeft", // topRight, topLeft, bottomRight, bottomLeft
-            offsetY: 30,
-            offsetX: 60,
           },
         },
-        legend: {
-          horizontalAlign: "left",
-          offsetX: 40,
+      ],
+      tooltip: {
+        fixed: {
+          enabled: true,
+          position: "topLeft", // topRight, topLeft, bottomRight, bottomLeft
+          offsetY: 30,
+          offsetX: 60,
         },
-      })
+      },
+      legend: {
+        horizontalAlign: "left",
+        offsetX: 40,
+      }
+    }
+
+    const [chartConfig, setChartConfig] = React.useState<null | any>(false)
+
+    React.useEffect(() => {
+      if(props.CHART_CONFIG) {
+        const { CHART_CONFIG } = props
+        const temp = {
+          series: [...CHART_CONFIG.series],
+          options: {
+            ...basicOptions
+          }
+        }
+        temp.options.yaxis.forEach((e, i)=> e.title = CHART_CONFIG.options.yaxis[i].title)
+        temp.options.xaxis = CHART_CONFIG.options.xaxis
+        temp.options.title.text = CHART_CONFIG.options.title.text
+        setChartConfig(temp)
+      }
+    }, [props])
 
     return (
-        <div id="chart">
-        <ReactApexChart
-          options={Options}
-          series={Series}
-          type="line"
-          height={350}
-        />
+      <div className="multiple-data-chart">
+        {
+          chartConfig && 
+          <ReactApexChart
+            options={chartConfig.options}
+            series={chartConfig.series}
+            type="line"
+            height={350}
+          />
+        }
       </div>
     )
 }

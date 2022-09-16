@@ -1,3 +1,5 @@
+import { Device } from "./device"
+
 export interface Reg {
     id: number
     device_id: number
@@ -10,10 +12,4 @@ export interface DataReg {
     air_humidity: number
     air_temperature: number
     soil_humidity: number
-}
-
-export interface Device {
-    id: number
-    name: string
-    created_at?: string
 }

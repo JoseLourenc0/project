@@ -6,3 +6,21 @@
 .home-buttons-container {
     margin-left: 40px;
 }
+
+.home-contaienr .filter-options {
+    display: flex;
+    flex-direction: column;
+    margin: 16px;
+    justify-content: start;
+    gap: 16px;
+    width: 500px;
+}
+
+.home-contaienr .filter-options div {
+    display: flex;
+    align-items: center;
+}
+
+.home-contaienr .filter-options div h4 {
+    margin-left: 30px;
+}

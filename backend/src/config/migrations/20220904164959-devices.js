@@ -12,6 +12,10 @@ module.exports = {
        allowNull: false,
        unique: true
      },
+     protocol: {
+      type: Sequelize.STRING(10),
+      allowNull: false
+     },
      created_at: {
        type: Sequelize.DATE,
        allowNull: false

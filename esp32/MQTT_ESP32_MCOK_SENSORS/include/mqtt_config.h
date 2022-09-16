@@ -78,7 +78,8 @@ void mqtt_main(
   std::string data = "{\"air_temperature\":" + sensors_data.air_temperature + ",\"air_humidity\":" + sensors_data.air_humidity + ",\"soil_humidity\":" + sensors_data.soil_humidity + "}";
   const char *p_data = data.c_str();
 
-  std::string topic = environment + "/" + place_id + "/" + product_id;
+  // std::string topic = environment + "/" + place_id + "/" + product_id;
+  std::string topic = environment + "/" + product_id;
   const char*p_topic = topic.c_str();
   mqttClient.publish(p_topic, p_data);
 }
