@@ -1,14 +1,11 @@
 import React from 'react'
 import moment, { Moment } from 'moment'
-import TextField from '@mui/material/TextField'
 import { MultipleYAxisChart } from '../../components/Charts'
 import { Reg } from '../../models/reg'
 import api from "../../services/api"
 import './style.css'
 import { MultipleAxisDataBasic } from '../../models/charts'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { DatePicker } from '@mui/x-date-pickers'
+import { CustomDatePicker } from '../../components/CustomDatePicker'
 
 export const Home = () => {
 
@@ -95,14 +92,7 @@ export const Home = () => {
                     <h4>{filteredRegs.length} Regs</h4>
                 </div>
                 <div>
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                        <DatePicker
-                            label="Date"
-                            value={dateValue}
-                            onChange={handleDateChange}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
+                    <CustomDatePicker dateValue={dateValue} handleDateChange={handleDateChange} />
                 </div>
             </div>
             <div className="home-chart-container">
