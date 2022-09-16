@@ -17,6 +17,13 @@ class Device extends Sequelize.Model {
                         msg: 'Device must have between 2 and 45 characters'
                     }
                 }
+            },
+            protocol: {
+                type: Sequelize.STRING,
+                defaultValue: 'http',
+                validate: {
+                    isIn: [['http', 'mqtt']]
+                }
             }
 
         }, {

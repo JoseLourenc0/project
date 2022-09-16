@@ -6,6 +6,12 @@ module.exports = {
     await queryInterface.bulkInsert('devices',[
       {
         name: 'ESP32_DEV',
+        protocol: 'http',
+        created_at: now
+      },
+      {
+        name: 'ESP32_DEV_MQTT',
+        protocol: 'mqtt',
         created_at: now
       }
     ])
